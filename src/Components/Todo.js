@@ -6,7 +6,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { useContext } from 'react';
+import { useContext,useState } from 'react';
 import {TodoContext} from '../Context/TodoContext.js';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,11 +14,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
 import TextField from '@mui/material/TextField';
-
-
-
+import {ToastContext} from '../Context/ToastContext.js';
 
 
 export default function Todo({todo}) {
@@ -26,6 +23,7 @@ export default function Todo({todo}) {
   const [open, setOpen] = useState(false);
   const [openupadte, setOpenupdate] = useState(false);
   const [updateinputtodo,setupdateinputtodo] = useState({title:todo.title,details:todo.details})
+  const { showhideToast } = useContext(ToastContext);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,13 +49,14 @@ export default function Todo({todo}) {
           return t;})
           setodoadd(newtodos)
           localStorage.setItem("todos", JSON.stringify(newtodos));
+          showhideToast("Todo Status Changed Successfully ")
 
   }
   function handledeletconfirm(){
     const newtodos = todos.filter((t) => t.id !== todo.id);
     setodoadd(newtodos)
     localStorage.setItem("todos", JSON.stringify(newtodos)) ;
-
+    showhideToast("Todo Deleted Successfully")
     handleClose()
   }
   function handleupdateconfirm(){
@@ -68,6 +67,7 @@ export default function Todo({todo}) {
       return t;});
       setodoadd(newtodosd)
       localStorage.setItem("todos", JSON.stringify(newtodosd));
+      showhideToast("Todo Updated Successfully")
 
     handleupdatClose()
   }

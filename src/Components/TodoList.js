@@ -13,11 +13,13 @@ import TextField from '@mui/material/TextField';
 import { v4 as uuidv4 } from 'uuid';
 import {useState,useContext,useEffect} from 'react';
 import {TodoContext} from '../Context/TodoContext';
+import {ToastContext} from '../Context/ToastContext.js';
 
 export default function TodoList() {
   const [inputtodo,setinputtodo] = useState("")
   const { todos, setodoadd } = useContext(TodoContext);
   const [buttonshowclicked, setbuttonshowclicked] = useState("all");
+  const { showhideToast } = useContext(ToastContext);
 
   const todoComplited= todos.filter((t) => { return t.completed === true; });
   const todoNotYet= todos.filter((t) => { return t.completed === false; });
@@ -49,6 +51,7 @@ export default function TodoList() {
     setodoadd(newtodoss);
     localStorage.setItem("todos", JSON.stringify(newtodoss));
     setinputtodo("")
+    showhideToast("Todo Added Successfully")
   }
 
 
@@ -89,7 +92,7 @@ export default function TodoList() {
         <TextField fullWidth label="Add New Stack" id="fullWidth" value={inputtodo} onChange={(e)=>{setinputtodo(e.target.value)}} />
           </Grid>
           <Grid  size={4}>
-          <Button style={{width:"100%",height:"100%", background:"green"}} variant="contained" onClick={handleAddCLICK} disabled={inputtodo.length <= 0 ? true :false}>Add+</Button>
+          <Button style={inputtodo.length <= 0 ? { width:"100%",height:"100%", background:"gray"} : {width:"100%",height:"100%", background:"green"}} variant="contained" onClick={handleAddCLICK} disabled={inputtodo.length <= 0 ? true :false}>Add+</Button>
           </Grid>
           </Grid>
       </CardContent>
